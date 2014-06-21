@@ -6,7 +6,7 @@
 
 using namespace std;
 
-void populate(SafeQueue<int>& q){
+void populate(ThreadedQueue<int>& q){
   for(int i=0;;i++){
     q.enqueue(i);
     sleep(1);
@@ -15,8 +15,8 @@ void populate(SafeQueue<int>& q){
 
 int main(){
 
-  // thread safe queue
-  SafeQueue<int> q;
+  // threaded queue
+  ThreadedQueue<int> q;
 
   // kick off generator thread
   thread t(populate,ref(q));

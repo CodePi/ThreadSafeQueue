@@ -5,7 +5,7 @@
 #include <condition_variable>
 
 template <class T>
-class SafeQueue{
+class ThreadedQueue{
 public:
 
   template<class U>
