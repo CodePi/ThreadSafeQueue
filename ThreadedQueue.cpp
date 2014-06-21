@@ -13,12 +13,37 @@ public:
     c.notify_one();
   }
 
-  T dequeue(void){
+  // simple dequeue
+  T dequeue(){
     std::unique_lock<std::mutex> lock(m);
     while(q.empty()) c.wait(lock);
-    T val = q.front();
+    T val = std::move(q.front());
     q.pop();
     return val;
+  }
+
+  // dequeue with timeout
+  bool dequeue(double timeout, T& rVal){
+    std::unique_lock<std::mutex> lock(m);
+    auto end = std::chrono::steady_clock::now()
+             + std::chrono::milliseconds(int(timeout*1000));
+    bool isTimeout=false;
+
+    // wait for timeout or value available
+    if(c.wait_until(lock, end, [&](){return !q.empty();} )){
+      rVal = std::move(q.front());
+      q.pop();
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  size_t size() { return q.size(); }
+  bool  empty() { return q.empty(); }
+  void  clear() {
+    std::lock_guard<std::mutex> lock(m);
+    q.clear();
   }
 
 private:
@@ -42,9 +67,23 @@ void populate(SafeQueue<int>& q){
 }
 
 int main(){
+
+  // thread safe queue
   SafeQueue<int> q;
+
+  // kick off generator thread
   thread t(populate,ref(q));
+
+  // receive loop
   while(1){
-    cout << q.dequeue() << endl;
+    if(0){
+      // simple dequeue
+      cout << q.dequeue() << endl;
+    }else{
+      // dequeue with timeout
+      int i;
+      if(q.dequeue(0.3,i)) cout << i << endl;
+      else                 cout << "timeout\n";
+    }
   }
 }
