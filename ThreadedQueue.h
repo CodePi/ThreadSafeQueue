@@ -1,3 +1,5 @@
+#pragma once
+
 #include <queue>
 #include <mutex>
 #include <condition_variable>
@@ -52,38 +54,3 @@ private:
   std::condition_variable c;
 };
 
-////////////////////////////////////////////////////
-
-#include<iostream>
-#include<unistd.h>
-#include<thread>
-using namespace std;
-
-void populate(SafeQueue<int>& q){
-  for(int i=0;;i++){
-    q.enqueue(i);
-    sleep(1);
-  }
-}
-
-int main(){
-
-  // thread safe queue
-  SafeQueue<int> q;
-
-  // kick off generator thread
-  thread t(populate,ref(q));
-
-  // receive loop
-  while(1){
-    if(0){
-      // simple dequeue
-      cout << q.dequeue() << endl;
-    }else{
-      // dequeue with timeout
-      int i;
-      if(q.dequeue(0.3,i)) cout << i << endl;
-      else                 cout << "timeout\n";
-    }
-  }
-}
