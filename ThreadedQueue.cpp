@@ -6,9 +6,10 @@ template <class T>
 class SafeQueue{
 public:
 
-  void enqueue(T t){
+  template<class U>
+  void enqueue(U&& t){
     std::lock_guard<std::mutex> lock(m);
-    q.push(t);
+    q.push(std::forward<U>(t));
     c.notify_one();
   }
 
