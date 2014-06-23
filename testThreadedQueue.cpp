@@ -1,15 +1,15 @@
 #include<iostream>
-#include<unistd.h>
 #include<thread>
 
 #include "ThreadedQueue.h"
 
 using namespace std;
+using namespace chrono;
 
 void populate(ThreadedQueue<int>& q){
   for(int i=0;;i++){
     q.enqueue(i);
-    sleep(1);
+    this_thread::sleep_for(seconds(1));
   }
 }
 
