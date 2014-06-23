@@ -27,12 +27,11 @@ public:
   // dequeue with timeout
   bool dequeue(double timeout, T& rVal){
     std::unique_lock<std::mutex> lock(m);
-    auto end = std::chrono::steady_clock::now()
-             + std::chrono::milliseconds(int(timeout*1000));
     bool isTimeout=false;
 
     // wait for timeout or value available
-    if(c.wait_until(lock, end, [&](){return !q.empty();} )){
+	auto maxTime = std::chrono::milliseconds(int(timeout*1000));
+    if(c.wait_for(lock, maxTime, [&](){return !q.empty();} )){
       rVal = std::move(q.front());
       q.pop();
       return true;
