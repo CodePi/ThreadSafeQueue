@@ -3,6 +3,8 @@ Header-only thread-safe queue
 
 ### Relevant methods:
 ```cpp
+namespace codepi{
+
 template <class T>
 class ThreadedQueue{
 
@@ -21,6 +23,7 @@ class ThreadedQueue{
   void  clear();
 
 };
+}
 ```
 
 ### Example usage:
