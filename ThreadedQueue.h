@@ -1,3 +1,6 @@
+// From the personal library of Paul Ilardi (http://github.com/CodePi).
+// Free to use or modify.
+
 #pragma once
 
 #include <queue>
