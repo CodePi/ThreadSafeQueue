@@ -7,6 +7,8 @@
 #include <mutex>
 #include <condition_variable>
 
+namespace codepi{
+
 template <class T>
 class ThreadedQueue{
 public:
@@ -56,3 +58,4 @@ private:
   std::condition_variable c;
 };
 
+} // end namespace codepi

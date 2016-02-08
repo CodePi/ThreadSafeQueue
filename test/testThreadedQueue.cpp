@@ -1,10 +1,11 @@
 #include<iostream>
 #include<thread>
 
-#include "ThreadedQueue.h"
+#include "../ThreadedQueue.h"
 
 using namespace std;
 using namespace chrono;
+using namespace codepi;
 
 void populate(ThreadedQueue<int>& q){
   for(int i=0;;i++){
