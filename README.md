@@ -27,6 +27,7 @@ class ThreadedQueue{
 ```cpp
 #include "ThreadedQueue.h"
 
+using namespace std;
 using namespace codepi;
 
 void populate(ThreadedQueue<int>& q){
@@ -41,7 +42,7 @@ int main(){
   ThreadedQueue<int> q;
 
   // kick off generator thread
-  thread t(populate,std::ref(q));
+  thread t(populate, ref(q));
 
   // receive loop
   while(1){
