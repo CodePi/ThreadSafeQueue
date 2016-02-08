@@ -1,7 +1,7 @@
 # ThreadedQueue
-Header-only thread-safe queue
+Header-only thread-safe queue.  Compiles with C++11 compatible compilers.  Tested with gcc 4.4 and Visual Studio 2012.
 
-### Relevant methods:
+#### Relevant methods:
 ```cpp
 namespace codepi{
 
@@ -26,7 +26,7 @@ class ThreadedQueue{
 }
 ```
 
-### Example usage:
+#### Example usage:
 ```cpp
 #include <thread>
 #include "ThreadedQueue.h"
