@@ -12,7 +12,7 @@ class ThreadedQueue{
   // retrieves from front of queue (blocks until success)
   T dequeue();
   
-  // dequeue with timeout (returns true upon success)
+  // dequeue with timeout (returns true if successful)
   bool dequeue(double timeout, T& returnVal);
 
 	// basic methods  
