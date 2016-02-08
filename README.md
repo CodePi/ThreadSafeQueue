@@ -25,6 +25,7 @@ class ThreadedQueue{
 
 ### Example usage:
 ```cpp
+#include <thread>
 #include "ThreadedQueue.h"
 
 using namespace std;
@@ -33,7 +34,7 @@ using namespace codepi;
 void populate(ThreadedQueue<int>& q){
   for(int i=0;;i++){
     q.enqueue(i);
-    this_thread::sleep_for(seconds(1));
+    this_thread::sleep_for(chrono::seconds(1));
   }
 }
 
