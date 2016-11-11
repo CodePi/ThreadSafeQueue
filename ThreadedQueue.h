@@ -35,7 +35,7 @@ public:
     bool isTimeout=false;
 
     // wait for timeout or value available
-	auto maxTime = std::chrono::milliseconds(int(timeout*1000));
+  auto maxTime = std::chrono::milliseconds(int(timeout*1000));
     if(c.wait_for(lock, maxTime, [&](){return !q.empty();} )){
       rVal = std::move(q.front());
       q.pop();
