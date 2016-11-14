@@ -1,4 +1,4 @@
-all :
+testThreadedQueue : testThreadedQueue.cpp
 	g++ testThreadedQueue.cpp -o testThreadedQueue -std=c++0x -pthread -D_GLIBCXX_USE_NANOSLEEP
 
 clean:
