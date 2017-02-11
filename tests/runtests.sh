@@ -4,7 +4,7 @@ set -e
 
 echo --------------------------
 echo testThreadSafeQueue
-./testThreadSafeQueue &
-pid=$!
-sleep 5
-kill $pid
+timeout 3 ./testThreadSafeQueue
+echo --------------------------
+echo testThreadSafeQueue2
+timeout 3 ./testThreadSafeQueue2

@@ -1,4 +1,5 @@
 testThreadSafeQueue
+testThreadSafeQueue2
 *.exe
 Debug
 Release
