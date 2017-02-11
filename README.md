@@ -1,4 +1,4 @@
-# ThreadedQueue
+# ThreadSafeQueue
 Header-only thread-safe queue.  Compiles with C++11 compatible compilers.  Tested with gcc 4.4 and Visual Studio 2012.
 
 #### Relevant methods:
@@ -6,7 +6,7 @@ Header-only thread-safe queue.  Compiles with C++11 compatible compilers.  Teste
 namespace codepi{
 
 template <class T>
-class ThreadedQueue{
+class ThreadSafeQueue{
 
 	// inserts onto back of queue  
   void enqueue(T& t);
@@ -29,12 +29,12 @@ class ThreadedQueue{
 #### Example usage:
 ```cpp
 #include <thread>
-#include "ThreadedQueue.h"
+#include "ThreadSafeQueue.h"
 
 using namespace std;
 using namespace codepi;
 
-void populate(ThreadedQueue<int>& q){
+void populate(ThreadSafeQueue<int>& q){
   for(int i=0;;i++){
     q.enqueue(i);
     this_thread::sleep_for(chrono::seconds(1));
@@ -43,7 +43,7 @@ void populate(ThreadedQueue<int>& q){
 
 int main(){
   // threaded queue
-  ThreadedQueue<int> q;
+  ThreadSafeQueue<int> q;
 
   // kick off generator thread
   thread t(populate, ref(q));
