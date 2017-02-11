@@ -1,4 +1,4 @@
-testThreadedQueue
+testThreadSafeQueue
 *.exe
 Debug
 Release

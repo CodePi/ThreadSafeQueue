@@ -1,13 +1,13 @@
 #include<iostream>
 #include<thread>
 
-#include "../ThreadedQueue.h"
+#include "../ThreadSafeQueue.h"
 
 using namespace std;
 using namespace chrono;
 using namespace codepi;
 
-void populate(ThreadedQueue<int>& q){
+void populate(ThreadSafeQueue<int>& q){
   for(int i=0;;i++){
     q.enqueue(i);
     this_thread::sleep_for(seconds(1));
@@ -17,7 +17,7 @@ void populate(ThreadedQueue<int>& q){
 int main(){
 
   // threaded queue
-  ThreadedQueue<int> q;
+  ThreadSafeQueue<int> q;
 
   // kick off generator thread
   thread t(populate,ref(q));

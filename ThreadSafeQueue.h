@@ -10,7 +10,7 @@
 namespace codepi{
 
 template <class T>
-class ThreadedQueue{
+class ThreadSafeQueue {
 public:
 
   template<class U>

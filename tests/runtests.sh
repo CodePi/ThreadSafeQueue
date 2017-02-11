@@ -3,8 +3,8 @@
 set -e
 
 echo --------------------------
-echo testThreadedQueue
-./testThreadedQueue &
+echo testThreadSafeQueue
+./testThreadSafeQueue &
 pid=$!
 sleep 5
 kill $pid
