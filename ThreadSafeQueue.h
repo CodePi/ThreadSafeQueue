@@ -29,13 +29,13 @@ public:
     return val;
   }
 
-  // dequeue with timeout
-  bool dequeue(double timeout, T& rVal){
+  // dequeue with timeout in seconds
+  bool dequeue(double timeout_sec, T& rVal){
     std::unique_lock<std::mutex> lock(m);
     bool isTimeout=false;
 
     // wait for timeout or value available
-    auto maxTime = std::chrono::milliseconds(int(timeout*1000));
+    auto maxTime = std::chrono::milliseconds(int(timeout_sec*1000));
     if(c.wait_for(lock, maxTime, [&](){return !q.empty();} )){
       rVal = std::move(q.front());
       q.pop();
