@@ -14,8 +14,8 @@ class ThreadSafeQueue{
   // retrieves from front of queue (blocks until success)
   T dequeue();
   
-  // dequeue with timeout (returns true if successful)
-  bool dequeue(double timeout, T& returnVal);
+  // dequeue with timeout in seconds (returns true if successful)
+  bool dequeue(double timeout_sec, T& returnVal);
 
 	// basic methods  
   size_t size();
