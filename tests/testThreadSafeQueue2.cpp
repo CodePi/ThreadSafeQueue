@@ -11,6 +11,7 @@ using namespace codepi;
 void populate(ThreadSafeQueue<unique_ptr<char[]>>& q){
   for(int i=0;;i++){
     unique_ptr<char[]> buf(new char[1000]);
+    buf[0] = i;
     q.enqueue(move(buf));
     this_thread::sleep_for(seconds(1));
   }
@@ -27,6 +28,6 @@ int main(){
   // receive loop
   while(1){
     unique_ptr<char[]> buf = q.dequeue();
-    cout << "recv" << endl;
+    cout << (int)buf[0] << endl;
   }
 }
