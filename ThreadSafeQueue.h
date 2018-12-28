@@ -10,16 +10,6 @@
 
 namespace codepi{
 
-template <class T>
-T& next_element(std::queue<T>& q){
-  return q.front();
-}
-  
-template <class T>
-T& next_element(std::stack<T>& s){
-  return s.top();
-}
-  
 template <class T, class Q = std::queue<T>>
 class ThreadSafeQueue {
 public:
@@ -67,6 +57,17 @@ private:
   Q q;
   mutable std::mutex m;
   std::condition_variable c;
+
+  template <class U>
+  static U& next_element(std::queue<U>& q){
+    return q.front();
+  }
+  
+  template <class U>
+  static U& next_element(std::stack<U>& s){
+    return s.top();
+  }
+  
 };
 
 } // end namespace codepi
