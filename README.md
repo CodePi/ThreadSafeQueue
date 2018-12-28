@@ -55,3 +55,14 @@ int main(){
 }
 ```
 
+#### ThreadSafeStack:
+
+ThreadSafeQueue can also be used as a stack (first in, last out).
+
+```cpp
+ThreadSafeQueue<int, std::stack<int>> s;
+s.enqueue(1);
+s.enqueue(2);
+std::cout << s.dequeue() << " " << s.dequeue() << "\n";
+// prints: 2 1
+```
