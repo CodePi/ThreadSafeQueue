@@ -16,3 +16,10 @@ pid=$!
 disown
 sleep 3
 kill $pid
+echo --------------------------
+echo testThreadSafeStack
+./testThreadSafeStack &
+pid=$!
+disown
+sleep 3
+kill $pid

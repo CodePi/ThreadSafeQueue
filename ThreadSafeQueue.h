@@ -4,12 +4,23 @@
 #pragma once
 
 #include <queue>
+#include <stack>
 #include <mutex>
 #include <condition_variable>
 
 namespace codepi{
 
 template <class T>
+T& next_element(std::queue<T>& q){
+  return q.front();
+}
+  
+template <class T>
+T& next_element(std::stack<T>& s){
+  return s.top();
+}
+  
+template <class T, class Q = std::queue<T>>
 class ThreadSafeQueue {
 public:
 
@@ -24,7 +35,7 @@ public:
   T dequeue(){
     std::unique_lock<std::mutex> lock(m);
     while(q.empty()) c.wait(lock);
-    T val = std::move(q.front());
+    T val = std::move(next_element(q));
     q.pop();
     return val;
   }
@@ -37,7 +48,7 @@ public:
     // wait for timeout or value available
     auto maxTime = std::chrono::milliseconds(int(timeout_sec*1000));
     if(c.wait_for(lock, maxTime, [&](){return !q.empty();} )){
-      rVal = std::move(q.front());
+      rVal = std::move(next_element(q));
       q.pop();
       return true;
     } else {
@@ -53,7 +64,7 @@ public:
   }
 
 private:
-  std::queue<T> q;
+  Q q;
   mutable std::mutex m;
   std::condition_variable c;
 };
