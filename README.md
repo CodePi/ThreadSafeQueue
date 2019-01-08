@@ -17,7 +17,7 @@ public:
   // dequeue with timeout in seconds (returns true if successful)
   bool dequeue(double timeout_sec, T& returnVal);
 
-	// basic methods  
+  // basic methods  
   size_t size();
   bool  empty();
   void  clear();
