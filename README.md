@@ -7,8 +7,8 @@ namespace codepi{
 
 template <class T>
 class ThreadSafeQueue{
-
-	// inserts onto back of queue  
+public:
+  // inserts onto back of queue  
   void enqueue(T& t);
   
   // retrieves from front of queue (blocks until success)
