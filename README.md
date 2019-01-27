@@ -12,7 +12,8 @@ public:
   ThreadSafeQueue(bool useStack=false);
 
   // inserts onto back of queue  
-  void enqueue(T& t);
+  void enqueue(T&& t);       // moves if possible
+  void enqueue(const T& t);  // copies if needed
   
   // retrieves from front of queue (blocks until success)
   T dequeue();
