@@ -61,7 +61,7 @@ public:
 private:
   std::queue<T> q;
   std::stack<T> s;
-  bool useStack = false;
+  bool useStack;
   mutable std::mutex m;
   std::condition_variable c;
   
