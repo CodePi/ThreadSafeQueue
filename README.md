@@ -1,5 +1,5 @@
 # ThreadSafeQueue
-Header-only thread-safe queue.  Compiles with C++11 compatible compilers.  Tested with gcc 4.4 and Visual Studio 2012.
+Header-only thread-safe queue.  Compiles with C++11 compatible compilers.  Tested with gcc 4.6 and Visual Studio 2012.
 
 #### Relevant methods:
 ```cpp
