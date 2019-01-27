@@ -14,7 +14,7 @@ template <class T>
 class ThreadSafeQueue {
 public:
 
- ThreadSafeQueue(bool useStack = false) : useStack(useStack) {}
+  ThreadSafeQueue(bool useStack = false) : useStack(useStack) {}
   
   void enqueue(T t){
     std::lock_guard<std::mutex> lock(m);
