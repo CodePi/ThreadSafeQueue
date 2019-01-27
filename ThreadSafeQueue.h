@@ -40,7 +40,7 @@ public:
 
     // wait for timeout or value available
     auto maxTime = std::chrono::milliseconds(int(timeout_sec*1000));
-    if(c.wait_for(lock, maxTime, [&](){return !empty();} )){
+    if(c.wait_for(lock, maxTime, [&](){return !this->empty();} )){
       rVal = std::move(next_element());
       if(useStack) s.pop();
       else         q.pop();
