@@ -8,7 +8,7 @@ using namespace std;
 using namespace chrono;
 using namespace codepi;
 
-void populate(ThreadSafeQueue<int, stack<int>>& q){
+void populate(ThreadSafeQueue<int>& q){
   for(int i=0;;i++){
     q.enqueue(i);
     this_thread::sleep_for(seconds(1));
@@ -17,8 +17,9 @@ void populate(ThreadSafeQueue<int, stack<int>>& q){
 
 int main(){
 
-  // threaded queue
-  ThreadSafeQueue<int, stack<int>> q;
+  // threaded stack
+  bool useStack = true;
+  ThreadSafeQueue<int> q(useStack);
 
   // kick off generator thread
   thread t(populate,ref(q));

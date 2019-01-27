@@ -10,23 +10,27 @@
 
 namespace codepi{
 
-template <class T, class Q = std::queue<T>>
+template <class T>
 class ThreadSafeQueue {
 public:
 
+ ThreadSafeQueue(bool useStack = false) : useStack(useStack) {}
+  
   template<class U>
   void enqueue(U&& t){
     std::lock_guard<std::mutex> lock(m);
-    q.push(std::forward<U>(t));
+    if(useStack) s.push(std::forward<U>(t));
+    else         q.push(std::forward<U>(t));
     c.notify_one();
   }
 
   // simple dequeue
   T dequeue(){
     std::unique_lock<std::mutex> lock(m);
-    while(q.empty()) c.wait(lock);
-    T val = std::move(next_element(q));
-    q.pop();
+    while(empty()) c.wait(lock);
+    T val = std::move(next_element());
+    if(useStack) s.pop();
+    else         q.pop();
     return val;
   }
 
@@ -37,37 +41,36 @@ public:
 
     // wait for timeout or value available
     auto maxTime = std::chrono::milliseconds(int(timeout_sec*1000));
-    if(c.wait_for(lock, maxTime, [&](){return !q.empty();} )){
-      rVal = std::move(next_element(q));
-      q.pop();
+    if(c.wait_for(lock, maxTime, [&](){return !empty();} )){
+      rVal = std::move(next_element());
+      if(useStack) s.pop();
+      else         q.pop();
       return true;
     } else {
       return false;
     }
   }
 
-  size_t size() { return q.size(); }
-  bool  empty() { return q.empty(); }
+  size_t size() { return useStack ? s.size()  : q.size(); }
+  bool  empty() { return useStack ? s.empty() : q.empty(); }
   void  clear() {
     std::lock_guard<std::mutex> lock(m);
-    q.clear();
+    if(useStack) s.clear();
+    else         q.clear();
   }
 
 private:
-  Q q;
+  std::queue<T> q;
+  std::stack<T> s;
+  bool useStack = false;
   mutable std::mutex m;
   std::condition_variable c;
-
-  template <class U>
-  static U& next_element(std::queue<U>& q){
-    return q.front();
-  }
   
-  template <class U>
-  static U& next_element(std::stack<U>& s){
-    return s.top();
+  T& next_element(){
+    if(useStack) return s.top();
+    else         return q.front();
   }
-  
+    
 };
 
 } // end namespace codepi
