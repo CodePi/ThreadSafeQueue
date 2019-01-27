@@ -8,6 +8,9 @@ namespace codepi{
 template <class T>
 class ThreadSafeQueue{
 public:
+  // constructor - option to use stack instead of queue
+  ThreadSafeQueue(bool useStack=false);
+
   // inserts onto back of queue  
   void enqueue(T& t);
   
@@ -60,7 +63,8 @@ int main(){
 ThreadSafeQueue can also be used as a stack (first in, last out).
 
 ```cpp
-ThreadSafeQueue<int, std::stack<int>> s;
+bool useStack = true;
+ThreadSafeQueue<int> s(useStack);
 s.enqueue(1);
 s.enqueue(2);
 std::cout << s.dequeue() << " " << s.dequeue() << "\n";
