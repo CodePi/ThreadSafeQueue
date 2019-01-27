@@ -3,23 +3,18 @@
 set -e
 
 echo --------------------------
-echo testThreadSafeQueue
-./testThreadSafeQueue &
-pid=$!
-disown
-sleep 3
-kill $pid
-echo --------------------------
-echo testThreadSafeQueue2
-./testThreadSafeQueue2 &
-pid=$!
-disown
-sleep 3
-kill $pid
-echo --------------------------
-echo testThreadSafeStack
-./testThreadSafeStack &
-pid=$!
-disown
-sleep 3
-kill $pid
+echo test_move
+./test_move
+
+TARGETS="testThreadSafeQueue testThreadSafeQueue2 testThreadSafeStack"
+
+for TEST in $TARGETS
+do
+    echo --------------------------
+    echo $TEST
+    ./$TEST &
+    pid=$!
+    disown
+    sleep 3
+    kill $pid
+done

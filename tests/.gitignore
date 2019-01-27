@@ -1,5 +1,6 @@
 testThreadSafeQueue
 testThreadSafeQueue2
+test_move
 testThreadSafeStack
 *.exe
 Debug

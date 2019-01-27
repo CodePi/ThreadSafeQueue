@@ -12,8 +12,7 @@ public:
   ThreadSafeQueue(bool useStack=false);
 
   // inserts onto back of queue  
-  void enqueue(T&& t);       // moves if possible
-  void enqueue(const T& t);  // copies if needed
+  void enqueue(T t);       // supports move, copies if needed
   
   // retrieves from front of queue (blocks until success)
   T dequeue();
@@ -57,6 +56,15 @@ int main(){
       cout << q.dequeue() << endl;
   }
 }
+```
+
+#### Move example
+
+``` cpp
+vector<int> vec1(1000000);      // large object that supports move
+ThreadSafeQueue<vector<int>> q;
+q.enqueue(move(vec));           // moves vector onto queue without copy
+vector<int> vec2 = q.dequeue(); // moves vector into vec2 without copy
 ```
 
 #### ThreadSafeStack:

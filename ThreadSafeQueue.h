@@ -16,11 +16,10 @@ public:
 
  ThreadSafeQueue(bool useStack = false) : useStack(useStack) {}
   
-  template<class U>
-  void enqueue(U&& t){
+  void enqueue(T t){
     std::lock_guard<std::mutex> lock(m);
-    if(useStack) s.push(std::forward<U>(t));
-    else         q.push(std::forward<U>(t));
+    if(useStack) s.push(std::move(t));
+    else         q.push(std::move(t));
     c.notify_one();
   }
 
