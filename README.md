@@ -25,6 +25,7 @@ public:
   bool  empty();
   void  clear();
 
+  ...
 };
 }
 ```
