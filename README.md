@@ -59,7 +59,7 @@ int main(){
 }
 ```
 
-#### Move example
+#### Move example:
 
 ``` cpp
 vector<int> vec1(1000000);      // large object that supports move
