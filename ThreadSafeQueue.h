@@ -15,7 +15,8 @@ class ThreadSafeQueue {
 public:
 
   ThreadSafeQueue(bool useStack = false) : useStack(useStack) {}
-  
+
+  // enqueue - supports move, copies only if needed. e.g. q.enqueue(move(obj));
   void enqueue(T t){
     std::lock_guard<std::mutex> lock(m);
     if(useStack) s.push(std::move(t));
