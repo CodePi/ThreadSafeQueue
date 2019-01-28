@@ -19,8 +19,7 @@ public:
   // enqueue - supports move, copies only if needed. e.g. q.enqueue(move(obj));
   void enqueue(T t){
     std::lock_guard<std::mutex> lock(m);
-    if(useStack) s.push(std::move(t));
-    else         q.push(std::move(t));
+    useStack? s.push(std::move(t)) : q.push(std::move(t));
     c.notify_one();
   }
 
@@ -28,10 +27,7 @@ public:
   T dequeue(){
     std::unique_lock<std::mutex> lock(m);
     while(empty()) c.wait(lock);
-    T val = std::move(next_element());
-    if(useStack) s.pop();
-    else         q.pop();
-    return val;
+    return pop();
   }
 
   // dequeue with timeout in seconds
@@ -42,21 +38,18 @@ public:
     // wait for timeout or value available
     auto maxTime = std::chrono::milliseconds(int(timeout_sec*1000));
     if(c.wait_for(lock, maxTime, [&](){return !this->empty();} )){
-      rVal = std::move(next_element());
-      if(useStack) s.pop();
-      else         q.pop();
+      rVal = pop();
       return true;
     } else {
       return false;
     }
   }
 
-  size_t size() { return useStack ? s.size()  : q.size(); }
-  bool  empty() { return useStack ? s.empty() : q.empty(); }
+  size_t size() { return useStack? s.size()  : q.size(); }
+  bool  empty() { return useStack? s.empty() : q.empty(); }
   void  clear() {
     std::lock_guard<std::mutex> lock(m);
-    if(useStack) s.clear();
-    else         q.clear();
+    useStack? s.clear() : q.clear();
   }
 
 private:
@@ -66,9 +59,10 @@ private:
   mutable std::mutex m;
   std::condition_variable c;
   
-  T& next_element(){
-    if(useStack) return s.top();
-    else         return q.front();
+  T pop(){
+    T val = useStack? std::move(s.top()) : std::move(q.front());
+    useStack? s.pop() : q.pop();
+    return val;
   }
     
 };
