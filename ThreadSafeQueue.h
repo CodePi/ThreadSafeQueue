@@ -19,7 +19,8 @@ public:
   // enqueue - supports move, copies only if needed. e.g. q.enqueue(move(obj));
   void enqueue(T t){
     std::lock_guard<std::mutex> lock(m);
-    useStack? s.push(std::move(t)) : q.push(std::move(t));
+    if(useStack) s.push(std::move(t));
+    else         q.push(std::move(t));
     c.notify_one();
   }
 
@@ -49,7 +50,8 @@ public:
   bool  empty() const { return useStack? s.empty() : q.empty(); }
   void  clear() {
     std::lock_guard<std::mutex> lock(m);
-    useStack? s.clear() : q.clear();
+    if(useStack) s.clear();
+    else         q.clear();
   }
 
 private:
@@ -60,9 +62,15 @@ private:
   std::condition_variable c;
   
   T pop(){
-    T val = useStack? std::move(s.top()) : std::move(q.front());
-    useStack? s.pop() : q.pop();
-    return val;
+    if(useStack){
+      T val = std::move(s.top());
+      s.pop();
+      return val;
+    }else{
+      T val = std::move(q.front());
+      q.pop();
+      return val;
+    }
   }
     
 };
