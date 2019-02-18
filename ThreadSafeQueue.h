@@ -45,8 +45,8 @@ public:
     }
   }
 
-  size_t size() { return useStack? s.size()  : q.size(); }
-  bool  empty() { return useStack? s.empty() : q.empty(); }
+  size_t size() const { return useStack? s.size()  : q.size(); }
+  bool  empty() const { return useStack? s.empty() : q.empty(); }
   void  clear() {
     std::lock_guard<std::mutex> lock(m);
     useStack? s.clear() : q.clear();
@@ -55,7 +55,7 @@ public:
 private:
   std::queue<T> q;
   std::stack<T> s;
-  bool useStack;
+  const bool useStack;
   mutable std::mutex m;
   std::condition_variable c;
   
