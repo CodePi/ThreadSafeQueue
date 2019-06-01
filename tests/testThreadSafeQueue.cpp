@@ -38,4 +38,5 @@ int main(){
     if(i==2) break;
   }
   t.join();
+  q.clear();
 }

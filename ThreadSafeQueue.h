@@ -50,8 +50,8 @@ public:
   bool  empty() const { return useStack? s.empty() : q.empty(); }
   void  clear() {
     std::lock_guard<std::mutex> lock(m);
-    if(useStack) s.clear();
-    else         q.clear();
+    // stack and queue have no clear method!! Maybe switch to deque
+    while(!empty()) pop();
   }
 
 private:
