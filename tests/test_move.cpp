@@ -1,7 +1,7 @@
 #include "../ThreadSafeQueue.h"
 #include <vector>
 #include <stdio.h>
-#include "assert.h"
+#include <assert.h>
 
 using namespace codepi;
 using namespace std;
