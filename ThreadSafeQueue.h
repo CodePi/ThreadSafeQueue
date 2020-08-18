@@ -10,17 +10,16 @@
 
 namespace codepi{
 
-template <class T>
+template <class T, class Container=std::queue<T>>
 class ThreadSafeQueue {
 public:
 
-  ThreadSafeQueue(bool useStack = false) : useStack(useStack) {}
+  ThreadSafeQueue() =default;
 
   // enqueue - supports move, copies only if needed. e.g. q.enqueue(move(obj));
   void enqueue(T t){
     std::lock_guard<std::mutex> lock(m);
-    if(useStack) s.push(std::move(t));
-    else         q.push(std::move(t));
+    q.push(std::move(t));
     c.notify_one();
   }
 
@@ -46,8 +45,8 @@ public:
     }
   }
 
-  size_t size() const { return useStack? s.size()  : q.size(); }
-  bool  empty() const { return useStack? s.empty() : q.empty(); }
+  size_t size() const { return q.size(); }
+  bool  empty() const { return q.empty(); }
   void  clear() {
     std::lock_guard<std::mutex> lock(m);
     // stack and queue have no clear method!! Maybe switch to deque
@@ -55,22 +54,17 @@ public:
   }
 
 private:
-  std::queue<T> q;
-  std::stack<T> s;
-  const bool useStack;
+  Container q;
   mutable std::mutex m;
   std::condition_variable c;
-  
+
+  T& get_top(std::stack<T>& s){ return s.top(); }
+  T& get_top(std::queue<T>& qu){ return qu.front(); }
+
   T pop(){
-    if(useStack){
-      T val = std::move(s.top());
-      s.pop();
-      return val;
-    }else{
-      T val = std::move(q.front());
-      q.pop();
-      return val;
-    }
+    T val = std::move(get_top(q));
+    q.pop();
+    return val;
   }
     
 };
