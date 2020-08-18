@@ -1,5 +1,6 @@
 #include<iostream>
 #include<thread>
+#include<cassert>
 
 #include "../ThreadSafeQueue.h"
 
@@ -18,6 +19,14 @@ int main(){
 
   // threaded queue
   ThreadSafeQueue<int> q;
+
+  // test basics
+  q.enqueue(1);
+  q.enqueue(2);
+  assert(q.size()==2);
+  assert(q.dequeue()==1);
+  assert(q.dequeue()==2);
+  assert(q.empty());
 
   // kick off generator thread
   thread t(populate,ref(q));
