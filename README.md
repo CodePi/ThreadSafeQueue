@@ -5,11 +5,11 @@ Header-only thread-safe queue.  Compiles with C++11 compatible compilers.  Teste
 ```cpp
 namespace codepi{
 
-template <class T>
+template <class T, class Container=std::queue<T>>   // option to use stack instead of queue
 class ThreadSafeQueue{
 public:
-  // constructor - option to use stack instead of queue
-  ThreadSafeQueue(bool useStack=false);
+  // constructor
+  ThreadSafeQueue();
 
   // inserts onto back of queue  
   void enqueue(T t);       // supports move, copies if needed
@@ -73,8 +73,7 @@ vector<int> vec2 = q.dequeue(); // moves vector into vec2 without copy
 ThreadSafeQueue can also be used as a stack (first in, last out).
 
 ```cpp
-bool useStack = true;
-ThreadSafeQueue<int> s(useStack);
+ThreadSafeQueue<int, std::stack<int>> s;
 s.enqueue(1);
 s.enqueue(2);
 std::cout << s.dequeue() << " " << s.dequeue() << "\n";
