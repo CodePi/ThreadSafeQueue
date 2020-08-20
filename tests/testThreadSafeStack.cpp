@@ -9,8 +9,10 @@ using namespace std;
 using namespace chrono;
 using namespace codepi;
 
+static const int N=3;
+
 void populate(ThreadSafeQueue<int, stack<int>>& s){
-  for(int i=0;i<3;i++){
+  for(int i=0;i<N;i++){
     s.enqueue(i);
     this_thread::sleep_for(milliseconds(100));
   }
@@ -25,7 +27,9 @@ int main(){
   // test basics
   s.enqueue(1);
   s.enqueue(2);
-  assert(s.size()==2);
+  s.enqueue(3);
+  assert(s.size()==3);
+  assert(s.dequeue()==3);
   assert(s.dequeue()==2);
   assert(s.dequeue()==1);
   assert(s.empty());
@@ -35,18 +39,16 @@ int main(){
 
   // receive loop
   bool testWithTimeout = false;
-  while(1){
-    int i;
+  for(int i=0; i<N; i++){
     if(!testWithTimeout){
       // simple dequeue
-      i = s.dequeue();
-      cout << i << endl;
+      int val = s.dequeue();
+      cout << val << endl;
     }else{
       // dequeue with timeout
       if(s.dequeue(0.3,i)) cout << i << endl;
       else                 cout << "timeout\n";
     }
-    if(i==2) break;
   }
   t.join();
 }
