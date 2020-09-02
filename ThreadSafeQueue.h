@@ -58,11 +58,11 @@ private:
   mutable std::mutex m;
   std::condition_variable c;
 
-  T& get_top(std::stack<T>& s){ return s.top(); }
-  T& get_top(std::queue<T>& qu){ return qu.front(); }
+  T& get_next(std::stack<T>& s){ return s.top(); }
+  T& get_next(std::queue<T>& qu){ return qu.front(); }
 
   T pop(){
-    T val = std::move(get_top(q));
+    T val = std::move(get_next(q));
     q.pop();
     return val;
   }
