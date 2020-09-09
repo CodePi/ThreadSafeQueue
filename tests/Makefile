@@ -1,5 +1,5 @@
 CC=g++
-FLAGS=-std=c++0x -pthread -D_GLIBCXX_USE_NANOSLEEP
+FLAGS=-std=c++11 -pthread
 TARGETS := testThreadSafeQueue testThreadSafeQueue2 testThreadSafeStack test_move
 
 all : $(TARGETS)
