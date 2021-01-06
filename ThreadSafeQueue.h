@@ -41,7 +41,9 @@ public:
   T dequeue(){
     std::unique_lock<std::mutex> lock(m);
     while(empty()) c.wait(lock);
-    return pop();
+    T rVal = std::move(next(q));
+    q.pop();
+    return rVal;
   }
 
   // dequeue with timeout in seconds
@@ -52,7 +54,8 @@ public:
     // wait for timeout or value available
     auto maxTime = std::chrono::milliseconds(int(timeout_sec*1000));
     if(c.wait_for(lock, maxTime, [&](){return !this->empty();} )){
-      rVal = pop();
+      rVal = std::move(next(q));
+      q.pop();
       return true;
     } else {
       return false;
@@ -71,15 +74,8 @@ private:
   mutable std::mutex m;
   std::condition_variable c;
 
-  T& get_next(std::stack<T>& s){ return s.top(); }
-  T& get_next(std::queue<T>& qu){ return qu.front(); }
-
-  T pop(){
-    T val = std::move(get_next(q));
-    q.pop();
-    return val;
-  }
-    
+  static T& next(std::stack<T>& s) { return s.top();   }
+  static T& next(std::queue<T>& q) { return q.front(); }
 };
 
 } // end namespace codepi
