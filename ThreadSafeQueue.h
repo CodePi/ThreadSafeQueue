@@ -63,8 +63,7 @@ public:
   bool  empty() const { return q.empty(); }
   void  clear() {
     std::lock_guard<std::mutex> lock(m);
-    // stack and queue have no clear method!! Maybe switch to deque
-    while(!empty()) pop();
+    q = Container();
   }
 
 private:
