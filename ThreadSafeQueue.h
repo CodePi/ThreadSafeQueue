@@ -32,15 +32,16 @@ public:
 
   // enqueue - supports move, copies only if needed. e.g. q.enqueue(move(obj));
   void enqueue(T t){
-    std::lock_guard<std::mutex> lock(m);
+    std::unique_lock<std::mutex> lock(m);
     q.push(std::move(t));
+    lock.unlock();
     c.notify_one();
   }
 
   // simple dequeue
   T dequeue(){
     std::unique_lock<std::mutex> lock(m);
-    while(empty()) c.wait(lock);
+    while(q.empty()) c.wait(lock);
     T rVal = std::move(next(q));
     q.pop();
     return rVal;
@@ -49,11 +50,10 @@ public:
   // dequeue with timeout in seconds
   bool dequeue(double timeout_sec, T& rVal){
     std::unique_lock<std::mutex> lock(m);
-    bool isTimeout=false;
 
     // wait for timeout or value available
     auto maxTime = std::chrono::milliseconds(int(timeout_sec*1000));
-    if(c.wait_for(lock, maxTime, [&](){return !this->empty();} )){
+    if(c.wait_for(lock, maxTime, [&](){return !q.empty();} )){
       rVal = std::move(next(q));
       q.pop();
       return true;
@@ -62,9 +62,13 @@ public:
     }
   }
 
-  size_t size() const { return q.size(); }
-  bool  empty() const { return q.empty(); }
-  void  clear() {
+  size_t size() const {
+    std::lock_guard<std::mutex> lock(m);
+    return q.size(); }
+  bool empty() const {
+    std::lock_guard<std::mutex> lock(m);
+    return q.empty(); }
+  void clear() {
     std::lock_guard<std::mutex> lock(m);
     q = Container();
   }
