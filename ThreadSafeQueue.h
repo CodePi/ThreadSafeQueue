@@ -52,7 +52,7 @@ public:
     std::unique_lock<std::mutex> lock(m);
 
     // if empty, wait up to timeout_sec
-    if(q.empty() and timeout_sec > 0){
+    if(timeout_sec > 0){
       auto max_time = std::chrono::duration<double>(timeout_sec);
       c.wait_for(lock, max_time, [&](){return !q.empty();} );
     }
