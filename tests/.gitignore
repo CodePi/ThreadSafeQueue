@@ -1,5 +1,6 @@
 testThreadSafeQueue
 testThreadSafeQueue2
+testThreadSafeQueue3
 test_move
 testThreadSafeStack
 *.exe
