@@ -51,14 +51,19 @@ public:
   bool dequeue(double timeout_sec, T& rVal){
     std::unique_lock<std::mutex> lock(m);
 
-    // wait for timeout or value available
-    auto maxTime = std::chrono::milliseconds(int(timeout_sec*1000));
-    if(c.wait_for(lock, maxTime, [&](){return !q.empty();} )){
+    // if empty, wait up to timeout_sec
+    if(q.empty() and timeout_sec > 0){
+      auto max_time = std::chrono::duration<double>(timeout_sec);
+      c.wait_for(lock, max_time, [&](){return !q.empty();} );
+    }
+
+    // return results
+    if(q.empty()){
+      return false;
+    }else{
       rVal = std::move(next(q));
       q.pop();
       return true;
-    } else {
-      return false;
     }
   }
 

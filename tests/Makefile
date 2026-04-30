@@ -1,5 +1,5 @@
-FLAGS=-std=c++11 -pthread
-TARGETS := testThreadSafeQueue testThreadSafeQueue2 testThreadSafeStack test_move
+FLAGS=-std=c++11 -pthread -O3
+TARGETS := testThreadSafeQueue testThreadSafeQueue2 testThreadSafeQueue3 testThreadSafeStack test_move
 
 all : $(TARGETS)
 

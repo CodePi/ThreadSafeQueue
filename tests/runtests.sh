@@ -2,7 +2,7 @@
 
 set -e
 
-TARGETS="test_move testThreadSafeQueue testThreadSafeQueue2 testThreadSafeStack"
+TARGETS="test_move testThreadSafeQueue testThreadSafeQueue2 testThreadSafeQueue3 testThreadSafeStack"
 
 for TEST in $TARGETS
 do
