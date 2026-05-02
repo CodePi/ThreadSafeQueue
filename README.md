@@ -1,5 +1,5 @@
 # ThreadSafeQueue
-Header-only thread-safe queue.  Compiles with C++11 compatible compilers.  Tested with gcc 4.7-9.0 and Visual Studio 2012.
+Header-only thread-safe queue.  Compiles with C++17 compatible compilers.  Tested with gcc 11+.
 
 #### Relevant methods:
 ```cpp
@@ -18,7 +18,8 @@ public:
   T dequeue();
   
   // dequeue with timeout in seconds (returns true if successful)
-  bool dequeue(double timeout_sec, T& returnVal);
+  std::optional<T> dequeue(double timeout_sec);
+  std::optional<T> dequeue(std::chrono::duration timeout);
 
   // basic methods  
   size_t size();
