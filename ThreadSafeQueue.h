@@ -21,6 +21,7 @@
 #include <stack>
 #include <mutex>
 #include <condition_variable>
+#include <optional>
 
 namespace codepi{
 
@@ -48,22 +49,22 @@ public:
   }
 
   // dequeue with timeout in seconds
-  bool dequeue(double timeout_sec, T& rVal){
+  template <typename T1, typename T2>
+  std::optional<T> dequeue(std::chrono::duration<T1,T2> timeout){
     std::unique_lock<std::mutex> lock(m);
 
     // if empty, wait up to timeout_sec
-    if(timeout_sec > 0){
-      auto max_time = std::chrono::duration<double>(timeout_sec);
-      c.wait_for(lock, max_time, [&](){return !q.empty();} );
+    if(timeout.count() > 0){
+      c.wait_for(lock, timeout, [&](){return !q.empty();} );
     }
 
     // return results
     if(q.empty()){
       return false;
     }else{
-      rVal = std::move(next(q));
+      std::optional<T> val{std::move(next(q))};
       q.pop();
-      return true;
+      return val;
     }
   }
 
@@ -76,6 +77,11 @@ public:
   void clear() {
     std::lock_guard<std::mutex> lock(m);
     q = Container();
+  }
+
+  std::optional<T> dequeue(double timeout_sec){
+    auto timeout = std::chrono::duration<double>(timeout_sec);
+    return dequeue(timeout);
   }
 
 private:

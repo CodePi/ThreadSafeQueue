@@ -41,8 +41,9 @@ int main(){
       cout << i << endl;
     }else{
       // dequeue with timeout
-      if(q.dequeue(0.3,i)) cout << i << endl;
-      else                 cout << "timeout\n";
+      auto oi = q.dequeue(0.3);
+      if(oi) cout << oi.value() << endl;
+      else   cout << "timeout\n";
     }
     if(i==2) break;
   }

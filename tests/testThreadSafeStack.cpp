@@ -46,8 +46,9 @@ int main(){
       cout << val << endl;
     }else{
       // dequeue with timeout
-      if(s.dequeue(0.3,i)) cout << i << endl;
-      else                 cout << "timeout\n";
+      auto oi = s.dequeue(0.3);
+      if(oi) cout << oi.value() << endl;
+      else   cout << "timeout\n";
     }
   }
   t.join();
