@@ -68,6 +68,11 @@ public:
     }
   }
 
+  std::optional<T> dequeue(double timeout_sec){
+    auto timeout = std::chrono::duration<double>(timeout_sec);
+    return dequeue(timeout);
+  }
+
   size_t size() const {
     std::lock_guard<std::mutex> lock(m);
     return q.size(); }
@@ -77,11 +82,6 @@ public:
   void clear() {
     std::lock_guard<std::mutex> lock(m);
     q = Container();
-  }
-
-  std::optional<T> dequeue(double timeout_sec){
-    auto timeout = std::chrono::duration<double>(timeout_sec);
-    return dequeue(timeout);
   }
 
 private:
