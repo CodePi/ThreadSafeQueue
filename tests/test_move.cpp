@@ -19,4 +19,11 @@ int main(){
 
   assert(p1==p2);
   printf("Test Passed\n");
+
+  std::unique_ptr<int> si{new int{314}};
+  ThreadSafeQueue<std::unique_ptr<int>> q2;
+  q2.enqueue(std::move(si));
+  auto oi = q2.dequeue(0);
+  printf("%d\n", **oi);
+  assert(**oi == 314);
 }

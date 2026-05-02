@@ -53,7 +53,7 @@ public:
   std::optional<T> dequeue(std::chrono::duration<T1,T2> timeout){
     std::unique_lock<std::mutex> lock(m);
 
-    // if empty, wait up to timeout_sec
+    // if empty, wait up to timeout
     if(timeout.count() > 0){
       c.wait_for(lock, timeout, [&](){return !q.empty();} );
     }
