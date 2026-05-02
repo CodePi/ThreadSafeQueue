@@ -60,7 +60,7 @@ public:
 
     // return results
     if(q.empty()){
-      return false;
+      return {};
     }else{
       std::optional<T> val{std::move(next(q))};
       q.pop();
