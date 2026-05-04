@@ -48,7 +48,7 @@ public:
     return rVal;
   }
 
-  // dequeue with timeout in seconds
+  // dequeue with timeout
   template <typename T1, typename T2>
   std::optional<T> dequeue(std::chrono::duration<T1,T2> timeout){
     std::unique_lock<std::mutex> lock(m);
@@ -68,6 +68,7 @@ public:
     }
   }
 
+  // dequeue with timeout in seconds
   std::optional<T> dequeue(double timeout_sec){
     auto timeout = std::chrono::duration<double>(timeout_sec);
     return dequeue(timeout);
